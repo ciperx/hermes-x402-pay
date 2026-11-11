@@ -1,0 +1,18 @@
+name: hermes-x402-pay
+version: 0.1.0
+description: >
+  Pay x402 (HTTP 402) APIs from inside Hermes with hard spend caps. Gives the agent
+  a real wallet: it signs an EIP-3009 authorization in USDC on Base, retries the
+  request with X-PAYMENT, returns the payload and the settlement receipt, and writes
+  every payment to a local SQLite ledger so spend is auditable after the fact.
+  Dry-run by default: nothing can be paid until you turn it on.
+author: agentskills
+provides_tools:
+  - x402_pay
+  - x402_receipts
+provides_hooks:
+  - post_tool_call
+requires_env: []
+capabilities: []
+python_dependencies:
+  - eth-account>=0.11
