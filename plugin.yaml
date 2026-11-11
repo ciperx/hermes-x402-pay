@@ -7,6 +7,7 @@ description: >
   every payment to a local SQLite ledger so spend is auditable after the fact.
   Dry-run by default: nothing can be paid until you turn it on.
 author: agentskills
+requires_hermes: ">=0.19.0"
 provides_tools:
   - x402_pay
   - x402_receipts

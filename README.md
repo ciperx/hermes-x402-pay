@@ -31,6 +31,11 @@ The budget is a `SUM()` over the last 24 hours of the ledger, so restarting Herm
 not reset it. The plugin reads the 402 response *first* and refuses **before signing**:
 a refused call never produces a signature and never touches the chain.
 
+The key is read through Hermes's credential route (`agent.secret_scope.get_secret`), not
+straight from the process environment, so a gateway serving several profiles resolves the
+*active profile's* value instead of another profile's. The key is never logged, returned,
+or written to the ledger; only its address appears in a receipt row.
+
 ## Install
 
 ```bash

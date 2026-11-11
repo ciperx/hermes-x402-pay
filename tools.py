@@ -34,9 +34,25 @@ def budget_report(ledger, ctx):
     return "\n".join(lines)
 
 
+def _secret(name):
+    """Read a secret the way Hermes routes credentials.
+
+    Primary route: ``agent.secret_scope.get_secret`` — under a multiplexed
+    gateway it resolves the *active profile's* value and fails closed instead of
+    picking up another profile's key from the process environment. Only when the
+    running Hermes has no such module (older release, declared floor >=0.19.0)
+    do we fall back to the process environment.
+    """
+    try:
+        from agent.secret_scope import get_secret  # type: ignore
+    except Exception:
+        return (os.environ.get(name, "") or "").strip()
+    return (get_secret(name, "") or "").strip()
+
+
 def _key(ctx):
     env_name = _cfg(ctx, "private_key_env", KEY_ENV_DEFAULT)
-    key = os.environ.get(env_name, "")
+    key = _secret(env_name)
     if not key:
         return None, (f"no signing key: set the {env_name} env var to a 0x-prefixed private key. "
                       "Use a dedicated low-balance wallet, never a main one.")
