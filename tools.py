@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import os
 
-import x402payer
+try:  # package-relative when loaded by Hermes, flat when run from the repo
+    from . import x402payer
+except ImportError:  # pragma: no cover
+    import x402payer
 
 KEY_ENV_DEFAULT = "X402_PRIVATE_KEY"
 
